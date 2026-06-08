@@ -1,4 +1,9 @@
+import { useAuth} from "../auth/AuthContext";
+
 export default function AdminPanel() {
+
+  const {usuario} = useAuth();
+  
   return (
     <div>
       <h2 className=" dark:bg-amber-300">
@@ -8,6 +13,10 @@ export default function AdminPanel() {
       <button className="text-amber-200">
         Gestionar Usuarios
       </button>
+      <p className="font-bold text-amber-300">
+                hola vendedor {usuario?.nombre}
+                <p>{usuario?.idUsuario}</p>
+            </p>
     </div>
   );
 }

@@ -10,7 +10,14 @@ export default function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Cierra el menú al hacer clic fuera
+  // vocales en icono
+  const iniciales = usuario?.nombre
+    ?.split(" ")
+    .filter(Boolean)
+    .map((palabra) => palabra[0].toUpperCase())
+    .slice(0, 2)
+    .join("");
+
   useClickOutside(menuRef, () => setShowMenu(false));
 
   return (
@@ -25,14 +32,15 @@ export default function Navbar() {
         </a>
 
         {/* Sección derecha */}
-        <div className="flex items-center space-x-4 px-8">
+        <div className="flex items-center space-x-4 px-8" ref={menuRef}>
           {!usuario ? (
             <button
-              onClick={() => setShowLogin(!showLogin)}
+              onClick={() => setShowLogin(true)}
               className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-300 dark:bg-green-700 hover:ring-2 hover:ring-blue-500"
             >
+              
               <svg
-                className="w-6 h-6 text-gray-800 dark:text-white"
+                className="w-6 h-6 text-gray-200 dark:text-white"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -47,16 +55,16 @@ export default function Navbar() {
               </svg>
             </button>
           ) : (
-            <div ref={menuRef} className="relative">
+            <div className="relative">
               <button
                 onClick={() => setShowMenu(!showMenu)}
                 className="flex items-center space-x-2"
               >
-                <img
-                  src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                  alt="User avatar"
-                  className="w-10 h-10 rounded-full cursor-pointer"
-                />
+                {/* logo iniciales  */}
+                <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center cursor-pointer">
+                  {iniciales}
+                </div>
+                
                 <span className="text-sm font-medium text-heading dark:text-white">
                   {usuario.nombre}
                 </span>
@@ -90,9 +98,18 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Modal centrado */}
       {showLogin && !usuario && (
-        <div className="absolute right-4 top-16 bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-lg w-80">
-          <Login />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="relative bg-white dark:bg-zinc-900 p-8 rounded-xl shadow-2xl w-96 animate-fadeIn">
+            <Login />
+            <button
+              onClick={() => setShowLogin(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 dark:hover:text-gray-300"
+            >
+              ✕
+            </button>
+          </div>
         </div>
       )}
     </nav>

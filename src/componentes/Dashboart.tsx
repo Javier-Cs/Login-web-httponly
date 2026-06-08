@@ -1,6 +1,7 @@
 import { useAuth } from "./auth/AuthContext";
 
 import AdminPanel from "./roles/AdminPanel";
+import VendedorPanel from "./roles/VendedoresPanel";
 
 export default function Dashboard() {
   const { usuario, loading } = useAuth();
@@ -16,5 +17,7 @@ export default function Dashboard() {
   switch (usuario.rol.toLowerCase()) {
     case "administrador":
       return <AdminPanel />;
+    case "vendedor":
+      return <VendedorPanel/>;
   }
 }
