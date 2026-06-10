@@ -10,13 +10,20 @@ export default function Login() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
     setError("");
     setLoading(true);
 
-    const ok = await login(email, password);
+    const result = await login(
+      email,
+      password
+    );
+
     setLoading(false);
 
-    if (!ok) setError("Correo o contraseña incorrectos");
+    if (!result.success) {
+      setError(result.message || "Error");
+    }
   }
 
   return (
@@ -52,7 +59,11 @@ export default function Login() {
         {loading ? "Ingresando..." : "Iniciar sesión"}
       </button>
 
-      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          {error}
+        </div>
+      )}
     </form>
   );
 }

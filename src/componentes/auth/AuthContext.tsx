@@ -1,3 +1,4 @@
+import { success } from "astro:schema";
 import { createContext, useContext, useEffect, useState } from "react";
 
 type Usuario = {
@@ -10,7 +11,10 @@ type Usuario = {
 type AuthContextType = {
   usuario: Usuario | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
+  //login: (email: string, password: string) => Promise<boolean>;
+  // para obtener el mensaje de respuesta 
+  login: (email: string, password: string) => Promise<{success: boolean, message?: string}>;
+
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 };
@@ -44,30 +48,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function login(email: string, password: string) {
-    const response = await fetch(
-      "https://apidatospr.cedesystem.com/Api/Auth/login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      },
-    );
+    try{
+      const response = await fetch(
+        "https://apidatospr.cedesystem.com/Api/Auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
+      const data = await response.json();
 
-    if (!response.ok) return false;
+      if (!response.ok){
+        return{
+          success:false,
+          message: data.message || "Error al iniciar sesión",
+        };
+      }
 
-    await refreshUser();
+      await refreshUser();
 
-    return true;
+      return {
+        success: true,
+      };
+    }catch{
+      return{
+        success: false,
+        message: "No fue posible conectar con el servidor",
+      };
+    }
+  
   }
 
+
+
+
+  // logout
   async function logout() {
-    await fetch("https://apidatospr.cedesystem.com/Api/Auth/logout", {
+    await fetch("https://apidatospr.cedesystem.com/Api/Auth/logOut", {
       method: "POST",
       credentials: "include",
     });

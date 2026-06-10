@@ -14,7 +14,7 @@ export default function AdminPanel() {
         Gestionar Usuarios
       </button>
       <p className="font-bold text-amber-300">
-                hola vendedor {usuario?.nombre}
+                hola admin {usuario?.nombre}
                 <p>{usuario?.idUsuario}</p>
             </p>
     </div>

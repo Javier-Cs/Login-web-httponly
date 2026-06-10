@@ -88,7 +88,13 @@ export default function Navbar() {
                       Earnings
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-800 cursor-pointer">
-                      <button onClick={logout}>Sign out</button>
+                      <button 
+                        onClick={async () =>{
+                          await logout();
+                          setShowMenu(false);
+                        }}>
+                          Sign out
+                      </button>
                     </li>
                   </ul>
                 </div>
