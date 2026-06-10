@@ -87,6 +87,9 @@ export default function Navbar() {
                     <li className="px-4 py-2 hover:bg-gray-800 cursor-pointer">
                       Earnings
                     </li>
+
+                    
+                    {/* la opcion de log out */}
                     <li className="px-4 py-2 hover:bg-gray-800 cursor-pointer">
                       <button 
                         onClick={async () =>{

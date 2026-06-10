@@ -91,13 +91,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // logout
   async function logout() {
-    await fetch("https://apidatospr.cedesystem.com/Api/Auth/logOut", {
-      method: "POST",
-      credentials: "include",
-    });
+    try{
+      const response = await fetch(
+        "https://apidatospr.cedesystem.com/Api/Auth/logOut", 
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
 
-    setUsuario(null);
+      console.log("Log Out:", response.status);
+
+      if(!response.ok){
+        throw new Error("No se pudo cerrar sesión");
+      }
+
+      setUsuario(null);
+    }catch(error){
+      console.error(error);
+    }
+    
   }
+
+
+
 
   useEffect(() => {
     refreshUser().finally(() => setLoading(false));
